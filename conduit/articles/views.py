@@ -1,4 +1,5 @@
 # Django
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect
@@ -129,6 +130,15 @@ def edit_article(request, article_id):
         return render_form_response(
             request, form, "articles/article_form.html", {"article": article}
         )
+
+
+@require_POST
+@login_required
+def delete_article(request, article_id):
+    article = get_object_or_404(Article, author=request.user, pk=article_id)
+    article.delete()
+    messages.info(request, _("Your article has been deleted"))
+    return redirect(settings.HOME_URL)
 
 
 @require_POST
