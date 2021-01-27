@@ -1,0 +1,20 @@
+{% load widget_tweaks i18n %}
+<form method="post"
+      class="bg-gray-100 w-full mb-3 rounded border"
+      action="{% url 'articles:submit_comment' article.id %}">
+  {% csrf_token %}
+  {% with WIDGET_ERROR_CLASS="text-red-800" widget_class="appearance-none text-lg rounded-t-lg p-3 pb-0 border border-gray-300 w-full h-64" %}
+  <div class="">
+    {% render_field form.body class=widget_class placeholder=form.body.label %}
+    {% include "_form_errors.html" with errors=form.body.errors %}
+  </div>
+  {% endwith %}
+  <div class="flex justify-end p-3">
+    <button type="submit"
+            class="px-4 py-2 rounded bg-blue-800 text-white hover:bg-blue-600">Submit Comment</button>
+  </div>
+</form>
+
+{% if comment %}
+{% include "articles/_comment.html" %}
+{% endif %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load widget_tweaks i18n %}
+{% block content %}
+<div class="flex justify-center items-center">
+  <div class="w-full lg:w-2/3"
+       id="article-form">
+
+    <form data-controller="slugify"
+          class="rounded border bg-white mb-3"
+          method="post"
+          action="{{ request.path }}"
+          novalidate>
+      {% csrf_token %}
+      {% include "_form_errors.html" with errors=form.non_field_errors %}
+      {% with WIDGET_ERROR_CLASS="form-input-error" widget_class="form-input text-lg p-2 w-full" %}
+      <div class="p-3 mb-3">
+        <div class="mb-3">
+          {% render_field form.title|set_data:"action:keyup->slugify#slugify" class=widget_class placeholder=form.title.label %}
+          {% include "_form_errors.html" with errors=form.title.errors %}
+        </div>
+        <div class="mb-3">
+          <div class="flex items-center">
+            <div class="font-semibold text-gray-500 text-lg mr-1">
+              http://{{ request.site.domain }}/
+            </div>
+            {% render_field form.slug|set_data:"slugify-target:field" class=widget_class placeholder=form.slug.label %}
+          </div>
+          {% include "_form_errors.html" with errors=form.slug.errors %}
+        </div>
+        <div class="mb-3">
+          {% render_field form.description class=widget_class placeholder=form.description.label %}
+          {% include "_form_errors.html" with errors=form.description.errors %}
+        </div>
+        <div class="mb-3">
+          {% render_field form.body class=widget_class placeholder=form.body.label %}
+          {% include "_form_errors.html" with errors=form.body.errors %}
+        </div>
+        <div>
+          {% render_field form.tags class=widget_class placeholder=form.tags.label %}
+          {% include "_form_errors.html" with errors=form.tags.errors %}
+        </div>
+      </div>
+      {% endwith %}
+      <div class="flex bg-gray-100 rounded-b-lg border border-t-none p-3 justify-end items-center">
+        {% if article %}
+        <a class="text-blue-800 hover:text-blue-600 mr-3 text-lg"
+           href="{{ article.get_absolute_url }}">
+          {% translate "Cancel" %}
+        </a>
+        <button type="submit"
+                class="px-4 py-2 rounded bg-blue-800 text-white hover:bg-blue-600">
+          {% translate "Save Article" %}
+        </button>
+        {% else %}
+        <button type="submit"
+                class="px-4 py-2 rounded bg-blue-800 text-white hover:bg-blue-600">
+          {% translate "Publish Article" %}
+        </button>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock content %}

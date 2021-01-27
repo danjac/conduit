@@ -9,12 +9,12 @@ from django.views.generic import TemplateView
 from conduit.users import views as account_views
 
 urlpatterns = [
-    path("", include("conduit.articles.urls")),
     path("login/", account_views.login, name="account_login"),
     path("logout/", account_views.logout, name="account_logout"),
     path("signup/", account_views.signup, name="account_signup"),
     path("accept-cookies/", account_views.accept_cookies, name="accept_cookies"),
     path(settings.ADMIN_URL, admin.site.urls),
+    path("", include("conduit.articles.urls")),
 ]
 
 if settings.DEBUG:

@@ -40,7 +40,7 @@
 
       {% if user.is_authenticated %}
       <div>
-        <a href=""
+        <a href="{% url 'articles:create' %}"
            class="inline-block mr-3">
           <i class="fa fa-pen mr-1"></i>
           {% translate "New Article" %}

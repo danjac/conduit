@@ -2,7 +2,7 @@
 from django import forms
 
 # Local
-from .models import Article
+from .models import Article, Comment
 
 
 class ArticleForm(forms.ModelForm):
@@ -20,3 +20,10 @@ class ArticleForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["tags"].required = False
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ("body",)
+        labels = {"body": "Write a comment..."}

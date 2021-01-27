@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block header %}
+{{ block.super }}
+<div class="py-6 mx-auto px-3 md:px-12 mb-3 mx-auto bg-gradient-to-b from-indigo-900 to-indigo-700 text-white w-full">
+  <h1 class="text-2xl font-bold mb-3">{{ article.title }}</h1>
+  <h2 class="text-lg mb-3">{{ article.description }}</h2>
+  <div class="md:flex justify-center items-center mb-3">
+
+    <div class="mb-6 md:mr-6 md:mb-0">
+      <div class="flex items-center mb-1">
+        {# include "users/_avatar.html" with user=article.author size="32" css_class="mr-2" #}
+        <a class="font-semibold text-lg hover:text-gray-100"
+           href="{{ article.author.get_absolute_url }}">{{ article.author }}</a>
+      </div>
+      <div class="text-sm">{{ article.created|date }}</div>
+    </div>
+
+    {% if can_edit %}
+    <div class="mb-6 md:mb-0 md:mr-6">
+      <a class="rounded px-4 py-2 border hover:bg-indigo-300"
+         href="{% url 'articles:edit' article.id %}">
+        <i class="fa fa-pen mr-1"></i> Edit Article
+      </a>
+    </div>
+    <form action=""
+          method="post">
+      {% csrf_token %}
+      <button class="rounded px-4 py-2 border hover:bg-indigo-300"
+              data-controller="confirm"
+              data-confirm-text-value="Are you sure you want to delete this article?"
+              data-action="confirm#confirm">
+        <i class="fa fa-trash mr-1"></i> Delete Article
+      </button>
+    </form>
+    {% endif %}
+
+    {% if can_follow %}
+    <div class="mb-3 md:mr-6 md:mb-0"
+         id="follow-header">
+      {# include "users/_follow.html" with user_obj=article.author #}
+    </div>
+    {% endif %}
+
+    {% if can_like %}
+    <div class="md:mr-6">
+      {% include "articles/_detail_like.html" with num_likes=article.num_likes target="article-likes-header" %}
+    </div>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock header %}
+
+{% block content %}
+<div class="pb-6 border-b mb-3">
+  <p>
+    {{ article.as_markdown }}
+  </p>
+</div>
+
+<div class="md:flex justify-center items-center mb-3">
+
+  <div class="mb-3 md:mr-6 md:mb-0">
+    <div class="flex items-center mb-1">
+      {# include "users/_avatar.html" with user=article.author size="32" css_class="mr-2" #}
+      <a class="font-semibold text-lg text-blue-800 hover:text-blue-600"
+         href="">{{ article.author }}</a>
+    </div>
+    <div class="text-gray-500 text-sm">{{ article.created|date }}</div>
+  </div>
+
+  {% if can_follow %}
+  <div class="mb-3 md:mr-6 md:mb-0"
+       id="follow-body">
+    {# include "users/_follow.html" with user_obj=article.author #}
+  </div>
+  {% endif %}
+
+  {% if can_like %}
+  <div>
+    {% include "articles/_detail_like.html" with num_likes=article.num_likes target="article-likes-body" %}
+  </div>
+  {% endif %}
+
+  {% if can_edit %}
+  <div class="mb-6 md:mb-0 md:mr-6">
+    <a class="rounded px-4 py-2 border hover:bg-gray-300"
+       href="{% url 'articles:edit' article.id %}">
+      <i class="fa fa-pen mr-1"></i> Edit Article
+    </a>
+  </div>
+  <form action=""
+        method="post">
+    {% csrf_token %}
+    <button class="rounded px-4 py-2 border border-red-500 text-red-500 hover:bg-red-300"
+            data-controller="confirm"
+            data-confirm-text-value="Are you sure you want to delete this article?"
+            data-action="confirm#confirm">
+      <i class="fa fa-trash mr-1"></i> Delete Article
+  </form>
+  {% endif %}
+</div>
+
+<div class="flex justify-center">
+  <div class="w-full lg:w-3/4">
+
+    {% if comment_form %}
+    <turbo-frame id="new-comment">
+      {% url 'articles:submit_comment' article.id as action_url %}
+      {% include "articles/_new_comment.html" with form=comment_form %}
+    </turbo-frame>
+    {% endif %}
+
+    {% for comment in page_obj.object_list %}
+    {% include "articles/_comment.html" %}
+    {% endfor %}
+    {% include "_pagination.html" %}
+  </div>
+</div>
+{% endblock content %}

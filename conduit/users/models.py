@@ -42,4 +42,12 @@ class UserManager(BaseUserManager.from_queryset(UserQuerySet)):
 class User(AbstractUser):
     name = models.CharField(_("Full name"), blank=True, max_length=255)
 
+    follows = models.ManyToManyField(
+        "self", related_name="followers", symmetrical=False, blank=True
+    )
+
+    likes = models.ManyToManyField(
+        "articles.Article", related_name="likers", blank=True
+    )
+
     objects = UserManager()

@@ -1,3 +1,4 @@
+{% load i18n %}
 <div class="border-b pb-3 mb-3"
      id="article-{{ article.id }}">
   <div class="flex items-center justify-between mb-3">
@@ -10,13 +11,11 @@
       <div class="text-gray-500 text-sm">{{ article.created|date }}</div>
     </div>
 
-    {% comment %}
     {% if request.user.is_authenticated and request.user != article.author %}
     {% include "articles/_like.html" with num_likes=article.num_likes can_like=True %}
     {% else %}
     {% include "articles/_like.html" with num_likes=article.num_likes can_like=False %}
     {% endif %}
-    {% endcomment %}
   </div>
   <div class="mb-3">
     <div class="text-xl font-bold mb-1">
@@ -25,7 +24,7 @@
     <div class="text-sm text-gray-500 mb-3">
       {{ article.description|truncatechars:100 }}
     </div>
-    <a href=""
+    <a href="{{ article.get_absolute_url }}"
        class="text-sm text-blue-800 hover:text-blue-600">
       {% translate "Read more..." %}
     </a>

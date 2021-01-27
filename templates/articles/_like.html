@@ -1,0 +1,14 @@
+{% if can_like %}
+<form method="post"
+      action="{% url 'articles:like' article.id %}">
+  {% csrf_token %}
+  {% endif %}
+  <button class="h-12 w-12 rounded border p-2 text-sm {% if can_like %}hover:bg-gray-100{% else %}cursor-default{% endif %} focus:outline-none">
+    {% block counter %}
+    <i class="fa fa-heart mr-1"></i>
+    <span id="article-likes-{{ article.id }}">{{ num_likes|default:0 }}</span>
+    {% endblock %}
+  </button>
+  {% if can_like %}
+</form>
+{% endif %}
