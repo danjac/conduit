@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block header %}
 {{ block.super }}
 <div class="flex justify-center text-center items-center py-6 mb-3 mx-auto bg-gradient-to-b from-indigo-900 to-indigo-700 text-white w-full">
@@ -23,17 +24,23 @@
   {% active_link user_obj.get_absolute_url as link %}
   <a href="{{ link.url }}"
      class="{% if link.exact %}text-blue-800 pb-3 border-b-2 border-blue-800{% else %}text-gray-500 hover:text-blue-800 pb-3{% endif %} mr-6">
-    My Articles
+    {% translate "My Articles" %}
   </a>
   {% active_link 'account:favorites' user_obj.username as link %}
   <a href="{{ link.url }}"
      class="{% if link.exact %}text-blue-800 pb-3 border-b-2 border-blue-800{% else %}text-gray-500 hover:text-blue-800 pb-3{% endif %}">
-    Favorited Articles
+    {% translate "Favorited Articles" %}
   </a>
 </div>
 
 {% for article in page_obj.object_list %}
 {% include "articles/_article.html" %}
+{% empty %}
+{% if favorites %}
+{% translate "This user has not got any liked articles" %}
+{% else %}
+{% translate "This user has not published any articles" %}
+{% endif %}
 {% endfor %}
 {% include "_pagination.html" %}
 {% endblock content %}

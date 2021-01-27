@@ -22,5 +22,37 @@
 .message-error {
   @apply bg-red-600;
 }
+.markdown-content {
+  @apply leading-relaxed whitespace-normal break-words text-sm;
+}
+
+.markdown-content h1 {
+  @apply text-2xl;
+}
+
+.markdown-content h2 {
+  @apply text-xl;
+}
+
+.markdown-content h3 {
+  @apply text-lg;
+}
+
+.img-responsive,
+.markdown-content img {
+  @apply block h-auto max-w-full;
+}
+
+.markdown-content ul {
+  @apply list-disc list-inside;
+}
+
+.markdown-content p {
+  @apply py-1;
+}
+
+.markdown-content code {
+  @apply italic bg-gray-100 p-1;
+}
 
 @tailwind utilities;

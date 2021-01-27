@@ -30,6 +30,8 @@
     {% endif %}
     {% for article in page_obj.object_list %}
     {% include "articles/_article.html" %}
+    {% empty %}
+    {% translate "No articles found" %}
     {% endfor %}
     {% include "_pagination.html" %}
   </div>

@@ -7,7 +7,7 @@
     {% block counter %}
     Favorite Article
     <i class="fa fa-heart mr-1"></i>
-    <span id="{{ target }}">{{ num_likes|default:0 }}</span>
+    (<span id="{{ target }}">{{ num_likes|default:0 }}</span>)
     {% endblock %}
   </button>
   {% if can_like %}

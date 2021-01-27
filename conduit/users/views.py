@@ -45,7 +45,12 @@ def user_detail(request, username, favorites=False):
         is_following = False
         can_follow = False
 
-    articles = Article.objects.filter(author=user).with_num_likes().order_by("-created")
+    articles = (
+        Article.objects.filter(author=user)
+        .with_num_likes()
+        .prefetch_related("author")
+        .order_by("-created")
+    )
 
     if favorites:
         articles = articles.filter(num_likes__gt=0)
@@ -57,6 +62,7 @@ def user_detail(request, username, favorites=False):
             "user_obj": user,
             "is_following": is_following,
             "can_follow": can_follow,
+            "favorites": favorites,
             "page_obj": paginate(request, articles),
         },
     )

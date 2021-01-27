@@ -53,10 +53,8 @@
 {% endblock header %}
 
 {% block content %}
-<div class="pb-6 border-b mb-3">
-  <p>
-    {{ article.as_markdown }}
-  </p>
+<div class="pb-6 border-b mb-3 markdown-content">
+  {{ article.as_markdown }}
 </div>
 
 <div class="md:flex justify-center items-center mb-3">
