@@ -60,3 +60,22 @@ class TestAcceptCookies:
             client.post(reverse("account:accept_cookies")).status_code
             == http.HTTPStatus.OK
         )
+
+
+class TestUserFollow:
+    def test_post_follow(self, client, login_user, user):
+        client.post(reverse("account:follow", args=[user.username]))
+        assert user in login_user.follows.all()
+
+    def test_post_follow_self(self, client, login_user):
+        response = client.post(reverse("account:follow", args=[login_user.username]))
+        assert response.status_code == http.HTTPStatus.NOT_FOUND
+
+    def test_post_unfollow(self, client, login_user, user):
+        login_user.follows.add(user)
+        client.post(reverse("account:follow", args=[user.username]))
+        assert user not in login_user.follows.all()
+
+    def test_post_unfollow_not_following(self, client, login_user, user):
+        response = client.post(reverse("account:follow", args=[user.username]))
+        assert response.status_code == http.HTTPStatus.NOT_FOUND
