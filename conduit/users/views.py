@@ -36,7 +36,7 @@ from conduit.shortcuts import handle_form
 from .forms import UserCreationForm, UserForm
 
 
-def user_detail(request, username):
+def user_detail(request, username, favorites=False):
     user = get_object_or_404(get_user_model(), username=username)
     if request.user.is_authenticated:
         is_following = request.user.follows.filter(pk=user.id).exists()
@@ -45,7 +45,10 @@ def user_detail(request, username):
         is_following = False
         can_follow = False
 
-    articles = Article.objects.filter(author=user).order_by("-created")
+    articles = Article.objects.filter(author=user).with_num_likes().order_by("-created")
+
+    if favorites:
+        articles = articles.filter(num_likes__gt=0)
 
     return TemplateResponse(
         request,

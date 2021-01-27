@@ -14,4 +14,10 @@ urlpatterns = [
     path("settings/", views.edit_settings, name="settings"),
     path("follow/<slug:username>/", views.follow, name="follow"),
     path("user/<slug:username>/", views.user_detail, name="detail"),
+    path(
+        "user/<slug:username>/favorites",
+        views.user_detail,
+        name="favorites",
+        kwargs={"favorites": True},
+    ),
 ]
