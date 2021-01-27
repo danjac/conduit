@@ -11,9 +11,8 @@
       <h1 class="text-5xl">{{ user_obj.username }}</h1>
     </div>
     {% if can_follow %}
-    <div class="flex justify-center"
-         id="follow-header">
-      {% include "account/_follow.html" %}
+    <div class="flex justify-center">
+      {% include "account/_follow.html" with target="follow-header" %}
     </div>
     {% endif %}
   </div>

@@ -82,15 +82,13 @@ def follow(request, username):
         request.user.follows.add(user)
         is_following = True
 
+    text = (_("Unfollow %(user)s") if is_following else _("Follow %(user)s")) % {
+        "user": user.username
+    }
+
     return TurboStreamIterableResponse(
         [
-            TurboStream(target)
-            .replace.template(
-                "account/_follow.html",
-                {"user_obj": user, "is_following": is_following, "target": target},
-                request=request,
-            )
-            .render()
+            TurboStream(target).update.render(text)
             for target in ["follow-header", "follow-footer"]
         ]
     )
