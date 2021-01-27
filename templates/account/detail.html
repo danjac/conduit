@@ -20,12 +20,14 @@
 {% endblock header %}
 {% block content %}
 <div class="border-b flex items-center mb-3">
-  <a href="{{ user_obj.get_absolute_url }}"
-     class="{% if favorites %}text-gray-500 hover:text-blue-800 pb-3{% else %}text-blue-800 pb-3 border-b-2 border-blue-800{% endif %} mr-6">
+  {% active_link user_obj.get_absolute_url as link %}
+  <a href="{{ link.url }}"
+     class="{% if link.exact %}text-blue-800 pb-3 border-b-2 border-blue-800{% else %}text-gray-500 hover:text-blue-800 pb-3{% endif %} mr-6">
     My Articles
   </a>
-  <a href="{% url 'account:favorites' user_obj.username %}"
-     class="{% if favorites %}text-blue-800 pb-3 border-b-2 border-blue-800{% else %}text-gray-500 hover:text-blue-800 pb-3{% endif %}">
+  {% active_link 'account:favorites' user_obj.username as link %}
+  <a href="{{ link.url }}"
+     class="{% if link.exact %}text-blue-800 pb-3 border-b-2 border-blue-800{% else %}text-gray-500 hover:text-blue-800 pb-3{% endif %}">
     Favorited Articles
   </a>
 </div>

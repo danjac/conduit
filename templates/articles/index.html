@@ -16,12 +16,14 @@
   <div class="col-span-2">
     {% if user.is_authenticated and not tag %}
     <div class="border-b flex items-center mb-3">
-      <a href="{% url 'articles:follows' %}"
-         class="{% if follows %}text-blue-800 pb-3 border-b-2 border-blue-800{% else %}text-gray-500 hover:text-blue-800 pb-3{% endif %} mr-6">
+      {% active_link 'articles:follows' as link %}
+      <a href="{{ link.url }}"
+         class="{% if link.exact %}text-blue-800 pb-3 border-b-2 border-blue-800{% else %}text-gray-500 hover:text-blue-800 pb-3{% endif %} mr-6">
         {% translate "Your Feed" %}
       </a>
-      <a href="{% url 'articles:index' %}"
-         class="{% if follows %}text-gray-500 hover:text-blue-800 pb-3{% else %}text-blue-800 pb-3 border-b-2 border-blue-800{% endif %}">
+      {% active_link 'articles:index' as link %}
+      <a href="{{ link.url }}"
+         class="{% if link.exact %}text-blue-800 pb-3 border-b-2 border-blue-800{% else %}text-gray-500 hover:text-blue-800 pb-3{% endif %}">
         {% translate "Global Feed" %}
       </a>
     </div>
