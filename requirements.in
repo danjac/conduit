@@ -20,6 +20,7 @@ django-widget-tweaks
 factory-boy
 future
 gunicorn
+httptools
 ipython
 markdown
 psycopg2-binary
