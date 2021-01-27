@@ -7,6 +7,7 @@ from django.http import HttpResponse
 import pytest
 
 # Real World App
+from conduit.articles.factories import ArticleFactory, CommentFactory
 from conduit.users.factories import UserFactory
 
 
@@ -42,3 +43,13 @@ def user(password):
 def login_user(client, user, password):
     client.login(username=user.username, password=password)
     return user
+
+
+@pytest.fixture
+def article():
+    return ArticleFactory()
+
+
+@pytest.fixture
+def comment():
+    return CommentFactory()

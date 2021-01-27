@@ -3,7 +3,7 @@
 {% if not accept_cookies %}
 <form class="text-white bg-gray-800 w-full py-3 flex justify-center" id="accept-cookies"
   method="post"
-  action="{% url 'accept_cookies' %}">
+  action="{% url 'account:accept_cookies' %}">
   {% csrf_token %}
   <div class="px-2">
     <div class="md:flex items-center">
