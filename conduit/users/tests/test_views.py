@@ -65,6 +65,43 @@ class TestAcceptCookies:
         )
 
 
+class TestEditSettings:
+    def test_post(self, client, login_user):
+        response = client.post(
+            reverse("account:settings"),
+            {
+                "name": "Test user",
+                "bio": "test",
+                "avatar": "",
+                "email": "tester@gmail.com",
+                "password1": "",
+                "password2": "",
+            },
+        )
+        assert response.url == settings.HOME_URL
+        login_user.refresh_from_db()
+        assert login_user.name == "Test user"
+        # check password unchanged
+        assert login_user.check_password("testpass1")
+
+    def test_post_change_password(self, client, login_user):
+        response = client.post(
+            reverse("account:settings"),
+            {
+                "name": "Test user",
+                "bio": "test",
+                "avatar": "",
+                "email": "tester@gmail.com",
+                "password1": "testpass2",
+                "password2": "testpass2",
+            },
+        )
+        assert response.url == settings.HOME_URL
+        login_user.refresh_from_db()
+        assert login_user.name == "Test user"
+        assert login_user.check_password("testpass2")
+
+
 class TestUserFollow:
     def test_post_follow(self, client, login_user):
         user = UserFactory()
