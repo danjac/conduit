@@ -1,9 +1,0 @@
-
-{% extends "base.html" %} {% load widget_tweaks %} {% block content %}
-<div class="flex justify-center items-center">
-  <div class="w-full lg:w-2/3" id="article-form">
-    {% include "articles/_article_form.html" %}
-  </div>
-</div>
-
-{% endblock content %}
