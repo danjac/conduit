@@ -1,4 +1,3 @@
-
 {% spaceless %}
 
 {% load static %}
@@ -12,7 +11,7 @@
 
 <head>
   <title>
-    {% spaceless %}{% block title %}Real World App{% endblock %}{% endspaceless %}
+    {% spaceless %}{% block title %}Conduit{% endblock %}{% endspaceless %}
   </title>
   <meta charset="UTF-8">
   <meta name="viewport"
@@ -23,28 +22,36 @@
         content="Dan Jacob {% now "Y" %}">
   <meta name="robots"
         content="index,follow">
-  
+
   {% include "_static.html" %}
-  
+
 </head>
 
 <body class="h-screen container-lg mx-auto antialiased bg-gray-100">
 
-  
+
   {% block header %}
-  
+
   <header class="bg-gradient-to-b from-indigo-900 to-indigo-700 text-white">
     <div class="flex items-center justify-between p-2 md:px-12">
       <div class="flex items-center flex-shrink-0 mr-6 text-lg">
-        <a href="/">Real World App</a>
+        <a href="/">Conduit</a>
       </div>
-      
+
       {% if user.is_authenticated %}
       <div>
-        <a href="/"
-           class="inline-block text-white hover:text-gray-100 mr-2">
-          {{ user.username }}
+        <a href=""
+           class="inline-block mr-3">
+          <i class="fa fa-pen mr-1"></i>
+          {% translate "New Article" %}
         </a>
+
+        <a href=""
+           class="inline-block mr-3">
+          <i class="fa fa-cog mr-1"></i>
+          {% translate "Settings" %}
+        </a>
+
         <form method="post"
               action="{% url 'account_logout' %}"
               class="inline-block">
@@ -76,5 +83,3 @@
 </body>
 
 </html>
-
-
