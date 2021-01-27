@@ -49,6 +49,7 @@ ROOT_URLCONF = "conduit.config.urls"
 ASGI_APPLICATION = "conduit.config.asgi.application"
 
 LOCAL_APPS = [
+    "conduit.articles.apps.ArticlesConfig",
     "conduit.users.apps.UsersConfig",
 ]
 
@@ -64,6 +65,7 @@ INSTALLED_APPS = [
     "django.contrib.postgres",
     "django.contrib.staticfiles",
     "django_extensions",
+    "taggit",
     "djcelery_email",
     "widget_tweaks",
     "channels",

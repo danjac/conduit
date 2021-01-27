@@ -13,12 +13,14 @@ django-model-utils
 django-redis
 django-silk
 django-storages
+django-taggit
 django-turbo-response
 django-widget-tweaks
 factory-boy
 future
 gunicorn
 ipython
+markdown
 psycopg2-binary
 pyopenssl
 pytest
