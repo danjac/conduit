@@ -3,13 +3,16 @@ import datetime
 
 # Django
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import REDIRECT_FIELD_NAME, authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect
 from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme
+from django.utils.translation import gettext as _
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
@@ -22,7 +25,21 @@ from turbo_response import TurboStream, redirect_303, render_form_response
 from conduit.shortcuts import handle_form
 
 # Local
-from .forms import UserCreationForm
+from .forms import UserCreationForm, UserForm
+
+
+@login_required
+def edit_settings(request):
+    with handle_form(request, UserForm, instance=request.user) as (form, is_success):
+        if is_success:
+            form.save()
+            messages.success(request, _("Your settings have been saved"))
+            return redirect_303(settings.HOME_URL)
+        return render_form_response(
+            request,
+            form,
+            "account/settings_form.html",
+        )
 
 
 @sensitive_post_parameters()

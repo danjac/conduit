@@ -1,3 +1,4 @@
+Pillow
 boto3
 celery
 channels
@@ -32,6 +33,7 @@ pytest-xdist
 pytz
 redis
 sentry_sdk
+sorl-thumbnail
 unidecode
 uvicorn
 uvloop

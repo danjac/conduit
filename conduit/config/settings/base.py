@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_extensions",
     "taggit",
+    "sorl.thumbnail",
     "djcelery_email",
     "widget_tweaks",
     "channels",

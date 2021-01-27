@@ -3,6 +3,9 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+# Third Party Libraries
+from sorl.thumbnail import ImageField
+
 
 class UserQuerySet(models.QuerySet):
     def matches_usernames(self, names):
@@ -41,6 +44,10 @@ class UserManager(BaseUserManager.from_queryset(UserQuerySet)):
 
 class User(AbstractUser):
     name = models.CharField(_("Full name"), blank=True, max_length=255)
+
+    bio = models.TextField(blank=True)
+
+    image = ImageField(null=True, blank=True)
 
     follows = models.ManyToManyField(
         "self", related_name="followers", symmetrical=False, blank=True

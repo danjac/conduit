@@ -4,7 +4,7 @@
   <div class="flex items-center justify-between mb-3">
     <div class="">
       <div class="flex items-center mb-1">
-        {# include "users/_avatar.html" with user=article.author size="32" css_class="mr-2" #}
+        {% include "account/_avatar.html" with user=article.author size="32" css_class="mr-2" %}
         <a class="font-semibold text-lg text-blue-800 hover:text-blue-600"
            href="{{ article.author.get_absolute_url }}">{{ article.author }}</a>
       </div>

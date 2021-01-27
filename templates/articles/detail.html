@@ -10,7 +10,7 @@
 
     <div class="mb-6 md:mr-6 md:mb-0">
       <div class="flex items-center mb-1">
-        {# include "users/_avatar.html" with user=article.author size="32" css_class="mr-2" #}
+        {% include "account/_avatar.html" with user=article.author size="32" css_class="mr-2" %}
         <a class="font-semibold text-lg hover:text-gray-100"
            href="{{ article.author.get_absolute_url }}">{{ article.author }}</a>
       </div>
@@ -64,7 +64,7 @@
 
   <div class="mb-3 md:mr-6 md:mb-0">
     <div class="flex items-center mb-1">
-      {# include "users/_avatar.html" with user=article.author size="32" css_class="mr-2" #}
+      {% include "account/_avatar.html" with user=article.author size="32" css_class="mr-2" %}
       <a class="font-semibold text-lg text-blue-800 hover:text-blue-600"
          href="">{{ article.author }}</a>
     </div>

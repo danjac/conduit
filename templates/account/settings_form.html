@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+{% load widget_tweaks %}
+<div class="flex justify-center items-center">
+  <div class="w-full lg:w-2/3"
+       id="settings-form">
+
+    <form class="rounded border bg-white mb-3 {% if form.errors %} border-red-800{% endif %}"
+          method="post"
+          enctype="multipart/form-data"
+          novalidate
+          action="{{ request.path }}">
+      {% csrf_token %}
+      {% if form.errors %}
+      <p class="p-3 text-center text-red-800">
+        Your form contains some errors.
+      </p>
+      {% endif %}
+      {% if form.non_field_errors %}
+      <div class="mb-3 p-3">
+        {% include "_form_errors.html" with errors=form.non_field_errors %}
+      </div>
+      {% endif %}
+      {% with WIDGET_ERROR_CLASS="form-input-error" widget_class="form-input text-lg p-2 w-full" %}
+      <div class="p-3 mb-3">
+        <div class="mb-3">
+          {% render_field form.name class=widget_class placeholder=form.name.label %}
+          {% include "_form_errors.html" with errors=form.name.errors %}
+        </div>
+        <div class="mb-3">
+          <label for="{{ form.image.id_for_label }}"
+                 class="block mb-2 text-lg{% if form.errors %} text-red-800{% endif %}">
+            Avatar
+          </label>
+          {% render_field form.image class=widget_class accept="image/*" %}
+          {% include "_form_errors.html" with errors=form.image.errors %}
+        </div>
+        <div class="mb-3">
+          {% render_field form.bio class=widget_class placeholder=form.bio.label %}
+          {% include "_form_errors.html" with errors=form.bio.errors %}
+        </div>
+        <div class="mb-3">
+          {% render_field form.email class=widget_class placeholder=form.email.label %}
+          {% include "_form_errors.html" with errors=form.email.errors %}
+        </div>
+        <div class="mb-3">
+          {% render_field form.password1 class=widget_class placeholder=form.password1.label %}
+          {% include "_form_errors.html" with errors=form.password1.errors %}
+        </div>
+        <div class="mb-3">
+          {% render_field form.password2 class=widget_class placeholder=form.password2.label %}
+          {% include "_form_errors.html" with errors=form.password2.errors %}
+        </div>
+      </div>
+
+      {% endwith %}
+      <div class="flex bg-gray-100 rounded-b-lg border border-t-none p-3 justify-end items-center">
+        <button type="submit"
+                class="px-4 py-2 rounded bg-blue-800 text-white hover:bg-blue-600">
+          Save Settings
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock content %}

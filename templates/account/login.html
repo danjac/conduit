@@ -6,14 +6,14 @@
 
 <h1 class="text-lg mb-3 font-bold">{% translate "Sign In" %}</h1>
 
-{% url 'account_signup' as signup_url %}
+{% url 'account:signup' as signup_url %}
 <p class="mb-3">{% blocktranslate %}If you have not created an account yet, then please
   <a class="underline hover:text-gray-300"
      href="{{ signup_url }}">sign up</a> first.{% endblocktranslate %}</p>
 
 <form class="p-3 border w-full sm:w-1/2 {% if form.errors %}border-red-600{% else %}border-gray-500{% endif %}"
       method="post"
-      action="{% url 'account_login' %}"
+      action="{% url 'account:login' %}"
       novalidate>
   {% csrf_token %}
   {% if redirect_field_value %}

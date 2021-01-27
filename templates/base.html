@@ -46,14 +46,14 @@
           {% translate "New Article" %}
         </a>
 
-        <a href=""
+        <a href="{% url 'account:settings' %}"
            class="inline-block mr-3">
           <i class="fa fa-cog mr-1"></i>
           {% translate "Settings" %}
         </a>
 
         <form method="post"
-              action="{% url 'account_logout' %}"
+              action="{% url 'account:logout' %}"
               class="inline-block">
           {% csrf_token %}
           <button class="text-white hover:text-gray-300">{% translate "Logout" %}</button>
@@ -61,9 +61,9 @@
       </div>
       {% else %}
       <div>
-        <a href="{% url 'account_login' %}"
+        <a href="{% url 'account:login' %}"
            class="inline-block text-white hover:text-gray-100 mr-2">{% translate "Login" %}</a>
-        <a href="{% url 'account_signup' %}"
+        <a href="{% url 'account:signup' %}"
            class="inline-block text-white hover:text-gray-100">{% translate "Signup" %}</a>
       </div>
       {% endif %}
