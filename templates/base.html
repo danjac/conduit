@@ -89,15 +89,16 @@
       {% endif %}
     </div>
 
+    {% include "_cookie_notice.html" %}
   </header>
   {% endblock header %}
 
   {% include "_messages.html" %}
-  {% include "_cookie_notice.html" %}
 
   <div class="min-h-full mx-auto p-2 md:px-12">
     {% block content %}{% endblock %}
   </div>
+
   {% include "_footer.html" %}
 
 </body>

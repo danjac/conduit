@@ -12,7 +12,7 @@ from taggit.models import TaggedItem
 from turbo_response import (
     TurboFrame,
     TurboStream,
-    TurboStreamIterableResponse,
+    TurboStreamResponse,
     redirect_303,
     render_form_response,
 )
@@ -172,7 +172,7 @@ def like_article(request, article_id):
 
     num_likes = article.likers.count()
 
-    return TurboStreamIterableResponse(
+    return TurboStreamResponse(
         [
             TurboStream(target).update.render(str(num_likes))
             for target in [

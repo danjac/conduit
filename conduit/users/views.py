@@ -23,7 +23,7 @@ from django.views.decorators.http import require_POST
 from turbo_response import (
     TurboFrame,
     TurboStream,
-    TurboStreamIterableResponse,
+    TurboStreamResponse,
     redirect_303,
     render_form_response,
 )
@@ -95,7 +95,7 @@ def follow(request, username):
         "user": user.username
     }
 
-    return TurboStreamIterableResponse(
+    return TurboStreamResponse(
         [
             TurboStream(target).update.render(text)
             for target in ["follow-header", "follow-footer"]
