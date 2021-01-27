@@ -32,14 +32,5 @@
   </a>
 </div>
 
-{% for article in page_obj.object_list %}
-{% include "articles/_article.html" %}
-{% empty %}
-{% if favorites %}
-{% translate "This user has not got any liked articles" %}
-{% else %}
-{% translate "This user has not published any articles" %}
-{% endif %}
-{% endfor %}
-{% include "_pagination.html" %}
+{% include "articles/_articles.html" %}
 {% endblock content %}

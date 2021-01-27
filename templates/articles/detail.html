@@ -152,11 +152,7 @@
       {% include "articles/_new_comment.html" with form=comment_form %}
     </turbo-frame>
     {% endif %}
-
-    {% for comment in page_obj.object_list %}
-    {% include "articles/_comment.html" %}
-    {% endfor %}
-    {% include "_pagination.html" %}
+    {% include "articles/_comments.html" %}
   </div>
 </div>
 {% endblock content %}

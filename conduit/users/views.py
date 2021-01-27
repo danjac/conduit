@@ -21,6 +21,7 @@ from django.views.decorators.http import require_POST
 
 # Third Party Libraries
 from turbo_response import (
+    TurboFrame,
     TurboStream,
     TurboStreamIterableResponse,
     redirect_303,
@@ -38,13 +39,6 @@ from .forms import UserCreationForm, UserForm
 
 def user_detail(request, username, favorites=False):
     user = get_object_or_404(get_user_model(), username=username)
-    if request.user.is_authenticated:
-        is_following = request.user.follows.filter(pk=user.id).exists()
-        can_follow = request.user != user
-    else:
-        is_following = False
-        can_follow = False
-
     articles = (
         Article.objects.filter(author=user)
         .with_num_likes()
@@ -55,15 +49,30 @@ def user_detail(request, username, favorites=False):
     if favorites:
         articles = articles.filter(num_likes__gt=0)
 
+    context = {"user_obj": user, "page_obj": paginate(request, articles)}
+
+    if request.turbo.frame:
+        return (
+            TurboFrame(request.turbo.frame)
+            .template("articles/_articles.html", context)
+            .response(request)
+        )
+
+    if request.user.is_authenticated:
+        is_following = request.user.follows.filter(pk=user.id).exists()
+        can_follow = request.user != user
+    else:
+        is_following = False
+        can_follow = False
+
     return TemplateResponse(
         request,
         "account/detail.html",
         {
-            "user_obj": user,
+            **context,
             "is_following": is_following,
             "can_follow": can_follow,
             "favorites": favorites,
-            "page_obj": paginate(request, articles),
         },
     )
 

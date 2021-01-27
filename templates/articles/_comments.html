@@ -1,0 +1,5 @@
+  {% for comment in page_obj.object_list %}
+  {% include "articles/_comment.html" %}
+  {% endfor %}
+  {% include "_pagination.html" %}
+

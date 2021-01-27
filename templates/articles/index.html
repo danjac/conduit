@@ -28,12 +28,7 @@
       </a>
     </div>
     {% endif %}
-    {% for article in page_obj.object_list %}
-    {% include "articles/_article.html" %}
-    {% empty %}
-    {% translate "No articles found" %}
-    {% endfor %}
-    {% include "_pagination.html" %}
+    {% include "articles/_articles.html" %}
   </div>
 
   {% if tags %}

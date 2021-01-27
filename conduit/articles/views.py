@@ -33,26 +33,35 @@ def article_list(request, follows=False, tag=None):
         Article.objects.with_num_likes().select_related("author").order_by("-created")
     )
 
-    tags = (
-        TaggedItem.objects.select_related("tag")
-        .values_list("tag__slug", "tag__name")
-        .distinct()
-    )
-
     if tag:
         articles = articles.filter(tags__slug__in=[tag])
 
     if follows and request.user.is_authenticated:
         articles = articles.filter(author__in=request.user.follows.all())
 
+    context = {
+        "page_obj": paginate(request, articles),
+        "follows": follows,
+        "tag": tag,
+    }
+
+    if request.turbo.frame:
+        return (
+            TurboFrame(request.turbo.frame)
+            .template("articles/_articles.html", context)
+            .response(request)
+        )
+
     return TemplateResponse(
         request,
         "articles/index.html",
         {
-            "page_obj": paginate(request, articles),
-            "tags": tags,
-            "follows": follows,
-            "tag": tag,
+            **context,
+            "tags": (
+                TaggedItem.objects.select_related("tag")
+                .values_list("tag__slug", "tag__name")
+                .distinct()
+            ),
         },
     )
 
@@ -84,6 +93,15 @@ def article_detail(request, slug):
 
     comments = article.comment_set.select_related("author").order_by("-created")
 
+    context = {"article": article, "page_obj": paginate(request, comments)}
+
+    if request.turbo.frame:
+        return (
+            TurboFrame(request.turbo.frame)
+            .template("articles/_comments.html", context)
+            .response(request)
+        )
+
     is_following = False
     can_follow = False
     can_like = False
@@ -108,13 +126,12 @@ def article_detail(request, slug):
         request,
         "articles/detail.html",
         {
-            "article": article,
+            **context,
             "comment_form": comment_form,
             "is_following": is_following,
             "can_follow": can_follow,
             "can_like": can_like,
             "can_edit": can_edit,
-            "page_obj": paginate(request, comments),
         },
     )
 
