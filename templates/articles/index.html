@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block header %}
+{{ block.super }}
+<div class="flex justify-center text-center items-center py-6 mb-3 mx-auto bg-gradient-to-b from-indigo-900 to-indigo-700 text-white w-full">
+  <div>
+    <h1 class="text-5xl mb-6">Conduit</h1>
+    <p class="text-2xl">{% translate "A place to share your knowledge." %}</p>
+  </div>
+</div>
+{% endblock header %}
+
+{% block content %}
+<div class="md:grid grid-cols-3 gap-4">
+
+  <div class="col-span-2">
+    {% if user.is_authenticated and not tag %}
+    <div class="border-b flex items-center mb-3">
+      <a href="{% url 'articles:follows' %}"
+         class="{% if follows %}text-blue-800 pb-3 border-b-2 border-blue-800{% else %}text-gray-500 hover:text-blue-800 pb-3{% endif %} mr-6">
+        {% translate "Your Feed" %}
+      </a>
+      <a href="{% url 'articles:index' %}"
+         class="{% if follows %}text-gray-500 hover:text-blue-800 pb-3{% else %}text-blue-800 pb-3 border-b-2 border-blue-800{% endif %}">
+        {% translate "Global Feed" %}
+      </a>
+    </div>
+    {% endif %}
+    {% for article in page_obj.object_list %}
+    {% include "articles/_article.html" %}
+    {% endfor %}
+    {% include "_pagination.html" %}
+  </div>
+
+  {% if tags %}
+  <div class="col-span-1">
+    <h2 class="text-lg mb-3 font-semibold">
+      {% translate "Popular Tags" %}
+    </h2>
+    <div class="p-3 rounded border">
+      {% for slug, name in tags %}
+      {% if slug == tag %}
+      <span class="inline-block px-4 py-1 bg-indigo-800 text-white rounded mr-2 mb-1">#{{ name }}</span>
+      {% else %}
+      <a href="{% url 'articles:tag' slug %}"
+         class="inline-block px-4 py-1 bg-gray-100 rounded mr-2 mb-1">#{{ name }}</a>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock content %}

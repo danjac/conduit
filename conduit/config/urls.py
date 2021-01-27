@@ -9,7 +9,7 @@ from django.views.generic import TemplateView
 from conduit.users import views as account_views
 
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="index.html")),
+    path("", include("conduit.articles.urls")),
     path("login/", account_views.login, name="account_login"),
     path("logout/", account_views.logout, name="account_logout"),
     path("signup/", account_views.signup, name="account_signup"),

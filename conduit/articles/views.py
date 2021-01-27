@@ -2,6 +2,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.template.response import TemplateResponse
+from django.utils.translation import gettext as _
 
 # Third Party Libraries
 from taggit.models import TaggedItem
@@ -56,13 +57,10 @@ def create_article(request):
             article.save()
             # save tags
             form.save_m2m()
-            messages.success(request, "Your article has been published!")
+            messages.success(request, _("Your article has been published!"))
             return redirect_303("articles:index")
         return render_form_response(
             request,
             form,
             "articles/article_form.html",
-            {"form": form},
-            target="article-form",
-            action="update",
         )
