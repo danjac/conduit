@@ -12,4 +12,6 @@ urlpatterns = [
     path("signup/", views.signup, name="signup"),
     path("accept-cookies/", views.accept_cookies, name="accept_cookies"),
     path("settings/", views.edit_settings, name="settings"),
+    path("follow/<slug:username>/", views.follow, name="follow"),
+    path("user/<slug:username>/", views.user_detail, name="detail"),
 ]

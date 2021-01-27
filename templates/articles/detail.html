@@ -37,9 +37,8 @@
     {% endif %}
 
     {% if can_follow %}
-    <div class="mb-3 md:mr-6 md:mb-0"
-         id="follow-header">
-      {# include "users/_follow.html" with user_obj=article.author #}
+    <div class="mb-3 md:mr-6 md:mb-0">
+      {% include "account/_follow.html" with user_obj=article.author target="follow-header" %}
     </div>
     {% endif %}
 
@@ -72,9 +71,8 @@
   </div>
 
   {% if can_follow %}
-  <div class="mb-3 md:mr-6 md:mb-0"
-       id="follow-body">
-    {# include "users/_follow.html" with user_obj=article.author #}
+  <div class="mb-3 md:mr-6 md:mb-0">
+    {% include "account/_follow.html" with user_obj=article.author target="follow-footer" %}
   </div>
   {% endif %}
 

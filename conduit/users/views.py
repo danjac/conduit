@@ -4,12 +4,13 @@ import datetime
 # Django
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import REDIRECT_FIELD_NAME, authenticate
+from django.contrib.auth import REDIRECT_FIELD_NAME, authenticate, get_user_model
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
+from django.template.response import TemplateResponse
 from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.utils.translation import gettext as _
@@ -19,13 +20,71 @@ from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.http import require_POST
 
 # Third Party Libraries
-from turbo_response import TurboStream, redirect_303, render_form_response
+from turbo_response import (
+    TurboStream,
+    TurboStreamIterableResponse,
+    redirect_303,
+    render_form_response,
+)
 
 # Real World App
+from conduit.articles.models import Article
+from conduit.pagination import paginate
 from conduit.shortcuts import handle_form
 
 # Local
 from .forms import UserCreationForm, UserForm
+
+
+def user_detail(request, username):
+    user = get_object_or_404(get_user_model(), username=username)
+    if request.user.is_authenticated:
+        is_following = request.user.follows.filter(pk=user.id).exists()
+        can_follow = request.user != user
+    else:
+        is_following = False
+        can_follow = False
+
+    articles = Article.objects.filter(author=user).order_by("-created")
+
+    return TemplateResponse(
+        request,
+        "account/detail.html",
+        {
+            "user_obj": user,
+            "is_following": is_following,
+            "can_follow": can_follow,
+            "page_obj": paginate(request, articles),
+        },
+    )
+
+
+@require_POST
+@login_required
+def follow(request, username):
+    user = get_object_or_404(
+        get_user_model().objects.exclude(pk=request.user.id), username=username
+    )
+
+    if request.user.follows.filter(pk=user.id).exists():
+        request.user.follows.remove(user)
+        is_following = False
+    else:
+        request.user.follows.add(user)
+        is_following = True
+
+    return TurboStreamIterableResponse(
+        [
+            TurboStream(target)
+            .replace.template(
+                "account/_follow.html",
+                {"user_obj": user, "is_following": is_following, "target": target},
+                request=request,
+            )
+            .render()
+            for target in ["follow-header", "follow-footer"]
+        ]
+    )
 
 
 @login_required

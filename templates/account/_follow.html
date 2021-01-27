@@ -1,0 +1,14 @@
+<form method="post"
+      id="{{ target }}"
+      action="{% url 'account:follow' user_obj.username %}">
+  {% csrf_token %}
+  {% if is_following %}
+  <button class="rounded px-4 py-2 border hover:bg-indigo-300">
+    <i class="fa fa-plus mr-1"></i> Unfollow {{ user_obj }}
+  </button>
+  {% else %}
+  <button class="rounded px-4 py-2 border hover:bg-indigo-300">
+    <i class="fa fa-plus mr-1"></i> Follow {{ user_obj }}
+  </button>
+  {% endif %}
+</form>
