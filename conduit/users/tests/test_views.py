@@ -8,6 +8,9 @@ from django.urls import reverse
 # Third Party Libraries
 import pytest
 
+# Real World App
+from conduit.articles.factories import ArticleFactory
+
 # Local
 from ..factories import UserFactory
 
@@ -63,6 +66,26 @@ class TestAcceptCookies:
             client.post(reverse("account:accept_cookies")).status_code
             == http.HTTPStatus.OK
         )
+
+
+class TestUserDetail:
+    def test_get(self, client, user):
+        ArticleFactory.create_batch(6, author=user)
+        response = client.get(reverse("account:detail", args=[user.username]))
+        assert response.status_code == 200
+        assert len(response.context["page_obj"].object_list) == 6
+
+
+class TestUserFavorites:
+    def test_get(self, client, login_user):
+        user = UserFactory()
+        article = ArticleFactory(author=user)
+        login_user.likes.add(article)
+        ArticleFactory.create_batch(6, author=user)
+        response = client.get(reverse("account:favorites", args=[user.username]))
+        assert response.status_code == 200
+        assert len(response.context["page_obj"].object_list) == 1
+        assert response.context["page_obj"].object_list[0] == article
 
 
 class TestEditSettings:
