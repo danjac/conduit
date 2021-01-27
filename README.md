@@ -9,3 +9,5 @@ For local development:
 Edit the environment variables as needed.
 
     docker-compose up -d
+
+## Heroku app:
