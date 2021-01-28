@@ -6,6 +6,7 @@
       <div class="flex items-center mb-1">
         {% include "account/_avatar.html" with user=article.author size="32" css_class="mr-2" %}
         <a class="font-semibold text-lg text-blue-800 hover:text-blue-600"
+           data-turbo-frame="_top"
            href="{{ article.author.get_absolute_url }}">{{ article.author }}</a>
       </div>
       <div class="text-gray-500 text-sm">{{ article.created|date }}</div>
@@ -25,6 +26,7 @@
       {{ article.description|truncatechars:100 }}
     </div>
     <a href="{{ article.get_absolute_url }}"
+       data-turbo-frame="_top"
        class="text-sm text-blue-800 hover:text-blue-600">
       {% translate "Read more..." %}
     </a>

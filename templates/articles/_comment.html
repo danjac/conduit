@@ -5,6 +5,7 @@
     <div class="bg-gray-100 p-3 flex items-center justify-between">
       <div class="flex items-center">
         <a href="{{ comment.author.get_absolute_url }}"
+           data-turbo-frame="_top"
            class="mr-2 text-blue-800 hover:text-blue-600">{{ comment.author }}</a>
         <span class="text-sm text-gray-600">
           {{ comment.created|date }}
